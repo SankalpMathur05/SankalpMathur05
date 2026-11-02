@@ -60,7 +60,7 @@
 
 <br>
 
-<img src="assets/orbit.svg" alt="My stack in orbit: Python, TypeScript, React, Next.js, PyTorch, FastAPI, Kotlin, PostgreSQL, ONNX, Docker and React Native" width="100%">
+<img src="assets/breakout.svg" alt="A self-playing neon Breakout game where every brick is part of my stack" width="100%">
 
 <img src="assets/languages.svg" alt="Most used languages across my public repos" width="100%">
 

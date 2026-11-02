@@ -1,6 +1,6 @@
 // Draws the profile's neon cards into assets/:
 //   header.svg     name card with cycling roles
-//   orbit.svg      my stack orbiting my initials
+//   breakout.svg   a self-playing Breakout game whose bricks are my stack
 //   languages.svg  language split across my public repos (needs GITHUB_TOKEN or GH_TOKEN;
 //                  skipped without one, so the static art can still be rebuilt offline)
 // Run: node scripts/build.mjs
@@ -88,43 +88,133 @@ ${lines}
   return card(W, H, `Sankalp Mathur. ${roles.join(', ')}. New Delhi, India. AI and backend at IntelGrader.`, body, css);
 }
 
-// ---------- orbit ----------
+// ---------- breakout ----------
 
-function orbit() {
-  const W = 840, H = 400, cx = 420, cy = 196;
-  const rings = [
-    { r: 74, secs: 36, items: ['Python', 'TypeScript'] },
-    { r: 116, secs: 60, items: ['React', 'Next.js', 'PyTorch', 'FastAPI'] },
-    { r: 168, secs: 90, items: ['Kotlin', 'PostgreSQL', 'ONNX', 'Docker', 'React Native'] },
+// Seeded PRNG so every rebuild plays the same match (no churn in git).
+function rng(seed) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(seed ^ (seed >>> 15), seed | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// A self-playing Breakout match. The game is simulated here, then every bounce,
+// brick break and paddle move is baked into SMIL animations, which GitHub can play
+// inside an image (no JavaScript allowed there).
+function breakout() {
+  const W = 840, H = 430;
+  const L = 16, R = W - 16, TOP = 58;
+  const rows = [
+    ['TypeScript', 'JavaScript', 'Python', 'Kotlin', 'Java', 'C++'],
+    ['React', 'Next.js', 'React Native', 'Tailwind', 'Three.js', 'Figma'],
+    ['FastAPI', 'Django', 'Spring', 'Node.js', 'PostgreSQL', 'Redis'],
+    ['PyTorch', 'ONNX', 'OpenCV', 'Docker', 'AWS', 'Git'],
   ];
-  let css = '';
-  const groups = rings
-    .map((ring, ri) => {
-      css += `.r${ri}{transform-origin:${cx}px ${cy}px;animation:spin ${ring.secs}s linear infinite}\n`;
-      const nodes = ring.items
-        .map((name, i) => {
-          const a = (i / ring.items.length) * Math.PI * 2 + ri * 0.7;
-          const x = +(cx + Math.cos(a) * ring.r).toFixed(1), y = +(cy + Math.sin(a) * ring.r).toFixed(1);
-          const col = NEON[(ri * 2 + i) % NEON.length];
-          // counter-rotate each node so its label stays upright; centred under the dot
-          // so it never runs into the core as the ring turns
-          return `<g style="transform-origin:${x}px ${y}px;animation:spin ${ring.secs}s linear infinite reverse">
-<circle cx="${x}" cy="${y}" r="4" fill="${col}" filter="url(#glow)"/>
-<text x="${x}" y="${y + 20}" class="mono" font-size="12.5" fill="#d7e6ff" text-anchor="middle">${esc(name)}</text>
-</g>`;
-        })
-        .join('');
-      return `<circle cx="${cx}" cy="${cy}" r="${ring.r}" fill="none" stroke="${C.ring}"${ri === 1 ? ' stroke-dasharray="3 7"' : ''}/>
-<g class="r${ri}">${nodes}</g>`;
+  const ROW_COL = [C.cyan, C.pink, '#a855f7', '#39ff88'];
+  const GAP = 10, BX = 28, BY = 74, BH = 28, BW = (W - 2 * BX - 5 * GAP) / 6;
+  const bricks = rows.flatMap((row, r) => row.map((name, c) => ({ name, r, x: BX + c * (BW + GAP), y: BY + r * (BH + GAP), t: null })));
+  const PY = 396, PW = 112, RAD = 6, SPEED = 480;
+  const rand = rng(7);
+
+  let x = W / 2, y = PY - RAD, t = 0, vx = 0, vy = 0, tEnd = null;
+  // On every paddle hit, aim at a random surviving brick (clamped to sane angles).
+  const aim = () => {
+    const alive = bricks.filter((b) => b.t === null);
+    const b = alive.length ? alive[Math.floor(rand() * alive.length)] : null;
+    const tx = b ? b.x + BW / 2 + (rand() - 0.5) * BW * 0.6 : L + rand() * (R - L);
+    const ty = b ? b.y + BH / 2 : TOP;
+    const ang = Math.min(-0.45, Math.max(Math.PI * -0.86, Math.atan2(ty - y, tx - x)));
+    vx = Math.cos(ang) * SPEED;
+    vy = Math.sin(ang) * SPEED;
+  };
+  const paddleAt = (bx) => Math.min(R - PW / 2, Math.max(L + PW / 2, bx - (vx / SPEED) * PW * 0.35));
+
+  aim();
+  const path = [[0, x, y]];
+  const paddle = [[0, paddleAt(x)]];
+  const dt = 1 / 600;
+  while (t < 150) {
+    const px = x, py = y;
+    x += vx * dt; y += vy * dt; t += dt;
+    let bounced = false;
+    if (x - RAD < L) { x = L + RAD; vx = Math.abs(vx); bounced = true; }
+    if (x + RAD > R) { x = R - RAD; vx = -Math.abs(vx); bounced = true; }
+    if (y - RAD < TOP) { y = TOP + RAD; vy = Math.abs(vy); bounced = true; }
+    for (const b of bricks) {
+      if (b.t !== null) continue;
+      const nx = Math.max(b.x, Math.min(x, b.x + BW)), ny = Math.max(b.y, Math.min(y, b.y + BH));
+      if ((x - nx) ** 2 + (y - ny) ** 2 > RAD * RAD) continue;
+      b.t = t;
+      // came in from the side if it was level with the brick a moment ago
+      if ((px < b.x || px > b.x + BW) && py >= b.y && py <= b.y + BH) vx = -vx;
+      else vy = -vy;
+      x = px; y = py; bounced = true;
+      break;
+    }
+    if (vy > 0 && y + RAD >= PY) {
+      y = PY - RAD;
+      aim();
+      paddle.push([t, paddleAt(x)]);
+      bounced = true;
+    }
+    if (bounced) path.push([t, x, y]);
+    if (tEnd === null && bricks.every((b) => b.t !== null)) tEnd = t;
+    if (tEnd !== null && t >= tEnd + 2.6) break;
+  }
+  const T = t;
+  path.push([T, x, y]);
+  paddle.push([T, paddle.at(-1)[1]]);
+
+  const f = (n) => n.toFixed(2);
+  const kt = (s) => Math.min(Math.max(s / T, 0), 1).toFixed(4);
+  const loop = `dur="${f(T)}s" repeatCount="indefinite"`;
+
+  // ball: exact timing via keyPoints (distance) mapped to keyTimes (time)
+  const lens = [0];
+  for (let i = 1; i < path.length; i++) lens.push(lens[i - 1] + Math.hypot(path[i][1] - path[i - 1][1], path[i][2] - path[i - 1][2]));
+  const total = lens.at(-1);
+  const d = 'M' + path.map(([, px, py]) => `${f(px)} ${f(py)}`).join(' L');
+  const ball = `<circle r="${RAD}" fill="#ffffff" filter="url(#glow)"><animateMotion path="${d}" keyPoints="${lens.map((l) => (l / total).toFixed(4)).join(';')}" keyTimes="${path.map(([s]) => kt(s)).join(';')}" calcMode="linear" ${loop}/></circle>`;
+
+  const pad = `<rect x="${-PW / 2}" y="${PY}" width="${PW}" height="8" rx="4" fill="${C.cyan}" filter="url(#glow)"><animateTransform attributeName="transform" type="translate" values="${paddle.map(([, px]) => `${f(px)} 0`).join(';')}" keyTimes="${paddle.map(([s]) => kt(s)).join(';')}" ${loop}/></rect>`;
+
+  // bricks vanish on their hit time and throw a ring of sparks
+  const brickSvg = bricks
+    .map((b) => {
+      const col = ROW_COL[b.r], a = b.t / T, a1 = Math.min(a + 0.003, 0.999), a2 = Math.min(a + 0.55 / T, 0.9995);
+      const cx = b.x + BW / 2, cy = b.y + BH / 2;
+      const sparks = Array.from({ length: 8 }, (_, i) => {
+        const ang = (i / 8) * Math.PI * 2 + 0.3, dist = 24 + (i % 3) * 9;
+        return `<circle cx="${f(cx)}" cy="${f(cy)}" r="2.2" fill="${col}" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;${a.toFixed(4)};${a1.toFixed(4)};${a2.toFixed(4)};1" ${loop}/><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${f(Math.cos(ang) * dist)} ${f(Math.sin(ang) * dist)};${f(Math.cos(ang) * dist)} ${f(Math.sin(ang) * dist)}" keyTimes="0;${a.toFixed(4)};${a2.toFixed(4)};1" ${loop}/></circle>`;
+      }).join('');
+      return `<g><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;${a.toFixed(4)};${a1.toFixed(4)};1" ${loop}/>
+<rect x="${f(b.x)}" y="${b.y}" width="${f(BW)}" height="${BH}" rx="6" fill="${col}" fill-opacity=".08" stroke="${col}" stroke-width="1.2" filter="url(#glow)"/>
+<text x="${f(cx)}" y="${cy + 4}" class="mono" font-size="12" fill="#e6f2ff" text-anchor="middle">${esc(b.name)}</text></g>${sparks}`;
     })
     .join('\n');
+
+  // score ticks up by 10 per brick
+  const times = bricks.map((b) => b.t).sort((p, q) => p - q);
+  const score = [0, ...times]
+    .map((start, k) => {
+      const end = times[k];
+      const vals = k === 0 ? `values="1;0" keyTimes="0;${kt(end)}"` : end === undefined ? `values="0;1" keyTimes="0;${kt(start)}"` : `values="0;1;0" keyTimes="0;${kt(start)};${kt(end)}"`;
+      return `<text x="${W - 28}" y="38" class="mono" font-size="13" fill="${C.cyan}" text-anchor="end" opacity="${k === 0 ? 1 : 0}">score ${String(k * 10).padStart(4, '0')}<animate attributeName="opacity" calcMode="discrete" ${vals} ${loop}/></text>`;
+    })
+    .join('');
+
+  const cleared = `<text x="${W / 2}" y="290" class="mono" font-size="22" font-weight="700" letter-spacing="4" fill="${C.cyan}" text-anchor="middle" filter="url(#glow)" opacity="0">STACK CLEARED<animate attributeName="opacity" calcMode="discrete" values="0;1" keyTimes="0;${kt(tEnd)}" ${loop}/></text>`;
+  const fade = `<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;${kt(0.25)};${kt(T - 0.45)};1" ${loop}/>`;
+
   const body = `
-<text x="28" y="40" class="mono" font-size="13" fill="${C.muted}">// stack in orbit</text>
-${groups}
-<circle cx="${cx}" cy="${cy}" r="30" fill="${C.bg}" stroke="${C.cyan}" stroke-width="1.5" filter="url(#glow)" class="core"/>
-<text x="${cx}" y="${cy + 6}" class="sans" font-size="17" font-weight="700" fill="${C.text}" text-anchor="middle">SM</text>`;
-  css += `@keyframes core{50%{stroke-opacity:.35}}.core{animation:core 3s ease-in-out infinite}`;
-  return card(W, H, 'My stack in orbit: Python, TypeScript, React, Next.js, PyTorch, FastAPI, Kotlin, PostgreSQL, ONNX, Docker and React Native.', body, css);
+<text x="28" y="38" class="mono" font-size="13" fill="${C.muted}">// breakout.ts · autoplay</text>
+${score}
+${brickSvg}
+${cleared}
+<g>${fade}${pad}${ball}</g>`;
+  return { svg: card(W, H, `A self-playing neon Breakout game. The bricks are my stack: ${rows.flat().join(', ')}.`, body), T, tEnd };
 }
 
 // ---------- languages ----------
@@ -180,7 +270,9 @@ async function languages() {
 
 mkdirSync(OUT, { recursive: true });
 writeFileSync(join(OUT, 'header.svg'), header());
-writeFileSync(join(OUT, 'orbit.svg'), orbit());
+const game = breakout();
+writeFileSync(join(OUT, 'breakout.svg'), game.svg);
+console.log(`breakout: board cleared at ${game.tEnd.toFixed(1)} s, loops every ${game.T.toFixed(1)} s`);
 const langs = await languages();
 if (langs) writeFileSync(join(OUT, 'languages.svg'), langs);
 else console.log('no token: kept the existing languages.svg');
