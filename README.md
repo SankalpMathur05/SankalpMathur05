@@ -42,15 +42,28 @@
 ### 💼 Experience
 
 **IntelGrader** · AI & Backend Engineer Intern · *Oct 2026 – now*
-- On-device page detection and orientation models (PyTorch → ONNX, running in Kotlin) for the answer-sheet camera
-- An in-app AI assistant with tool calling, and bug-report triage with Qwen3-VL
+- Trained and shipped on-device vision models for page detection and orientation (PyTorch → ONNX), running inside a custom Kotlin camera module
+- Built an in-app AI assistant with scope-checked tool calling and rich answer cards
+- Built bug-report triage with Qwen3-VL that labels, prioritises and groups duplicate reports
+- Backend features in Elixir/Phoenix, including email sign-up, tenant isolation and Razorpay payments
+- App features in React Native: review flows, analytics and dark mode
+- Shipped features for the internal sales CRM on Supabase, including an AI voice-agent call handoff and live meeting alerts
 
 **RoadVision AI** · Software Development Intern · *Mar – Sep 2026*
-- An annotation platform holding 10M+ frames and 2.6M+ labels
-- A hiring platform, GIS survey apps, and a zero-downtime MongoDB → PostgreSQL migration
+- Scaled a custom annotation platform (Django, PostgreSQL, Redis) to 10M+ frames and 2.6M+ labels, serving ~1.6M requests a day
+- Sole frontend developer on a hiring platform (React, Django REST, WebSockets) that handled 10,000+ applications, with AI-led interviews
+- Built a road-survey GIS system: three React Native apps, FastAPI services and a live Next.js map dashboard
+- Migrated that system from MongoDB to PostgreSQL with zero downtime, with every endpoint verified byte-identical
+- Shipped a cross-platform labelling app (Expo + Fastify) that syncs straight into Label Studio
+- Delivered a bilingual English/Telugu app for staff at 68 government warehouses, with offline sync
+- Built an ML pre-annotation pipeline in which a trained YOLO11 detector beat a zero-shot Grounding DINO + SAM stack by ~20× on F1
 
 **Quadrafort Technologies** · Full-Stack Developer Intern · *Jul – Aug 2025*
-- A MERN task manager with role-based access
+- Built a MERN task manager with JWT auth and role-based access for teams
+- Added task boards, progress tracking and admin dashboards, deployed as [Taskify](https://taskifyproject.vercel.app)
+
+**Research** · *2025 – 2026*
+- Four published papers, including *Benchmarking Large Language Models for Structured Data Processing* (Springer, 2026)
 
 ### 📊 GitHub activity
 
