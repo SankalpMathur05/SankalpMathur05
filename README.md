@@ -14,7 +14,7 @@
 
 ### 🙋 About me
 
-- 🔭 Currently building at **IntelGrader**, an app that grades handwritten answer sheets
+- 🔭 Currently building at **IntelGrader**
 - 🧠 Into on-device ML, LLM tooling, and fast, clean interfaces
 - ⚡ Shipped six production platforms during my internship at RoadVision AI
 - 🎓 B.Tech in AI & ML (2026), with four published papers
@@ -36,7 +36,6 @@
 | **[Sentiment Pulse](https://github.com/SankalpMathur05/sentiment-pulse)**<br><sub>[live demo](https://sentiment-pulse-tawny.vercel.app)</sub> | A sentiment model I trained from scratch, served behind a live analytics dashboard | <img src="https://skillicons.dev/icons?i=py,sklearn,fastapi,postgres,redis,nextjs" height="26" alt="Python, scikit-learn, FastAPI, PostgreSQL, Redis, Next.js"> |
 | **[MedLens AI](https://github.com/SankalpMathur05/Medical-Prescription-OCR)**<br><sub>[live demo](https://medical-ocr-kappa.vercel.app)</sub> | Turns photos of handwritten prescriptions into structured data and a PDF report | <img src="https://skillicons.dev/icons?i=py,fastapi,nextjs,mongodb,vercel" height="26" alt="Python, FastAPI, Next.js, MongoDB, Vercel"> |
 | **[PrepWise AI](https://project-7ppyq.vercel.app)**<br><sub>live beta</sub> | AI mock interviews and coding practice across 12 career tracks | <img src="https://skillicons.dev/icons?i=nextjs,spring,java,postgres,firebase" height="26" alt="Next.js, Spring Boot, Java, PostgreSQL, Firebase"> |
-| **AutoMailer**<br><sub>private</sub> | Paced job-outreach emails with AI-written openers and follow-ups | <img src="https://skillicons.dev/icons?i=py,fastapi,postgres,docker" height="26" alt="Python, FastAPI, PostgreSQL, Docker"> |
 | **[Universal Web Scraper](https://github.com/SankalpMathur05/Universal-Web-Scraper)** | Scrapes any site into tidy, section-by-section JSON | <img src="https://skillicons.dev/icons?i=py,fastapi,react,vite" height="26" alt="Python, FastAPI, React, Vite"> |
 | **[SkillNest](https://github.com/SankalpMathur05/Smarrtif-Assignment-SkillNest)**<br><sub>[live demo](https://smarrtif-assignment-skill-nest.vercel.app)</sub> | A course platform with student and admin roles | <img src="https://skillicons.dev/icons?i=nextjs,ts,express,mongodb" height="26" alt="Next.js, TypeScript, Express, MongoDB"> |
 
