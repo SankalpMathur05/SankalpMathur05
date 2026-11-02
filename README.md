@@ -1,25 +1,18 @@
-<h1 align="center">Hey, I'm Sankalp 👋</h1>
-<p align="center">AI engineer from New Delhi · the frontend is where I have the most fun</p>
+<img src="assets/header.svg" alt="Sankalp Mathur: AI engineer, frontend developer, on-device ML, full-stack and mobile. New Delhi, India." width="100%">
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&pause=1200&color=2F81F7&center=true&vCenter=true&width=620&lines=AI+Engineer+%40+IntelGrader;On-device+ML+%C2%B7+Full-stack+%C2%B7+Mobile;Building+with+React%2C+Next.js+%26+PyTorch;Turning+handwriting+into+data" alt="AI Engineer at IntelGrader. On-device ML, full-stack, mobile. Building with React, Next.js and PyTorch.">
+  <a href="https://www.linkedin.com/in/sankalp-mathur-985a171b0"><img src="https://img.shields.io/badge/LinkedIn-07080d?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzAwZTVmZiI%2BPGNpcmNsZSBjeD0iNSIgY3k9IjUiIHI9IjIuMiIvPjxyZWN0IHg9IjMiIHk9IjkiIHdpZHRoPSI0IiBoZWlnaHQ9IjEyIiByeD0iLjYiLz48cGF0aCBkPSJNOSA5aDMuOHYxLjhjLjctMS4yIDItMi4xIDMuOS0yLjEgMy4zIDAgNC4zIDIuMSA0LjMgNS4xVjIxaC00di02LjNjMC0xLjUtLjQtMi42LTEuOC0yLjZzLTIuMiAxLjEtMi4yIDIuNlYyMUg5eiIvPjwvc3ZnPg%3D%3D" alt="LinkedIn"></a>
+  <a href="mailto:sankalpmathur4@gmail.com"><img src="https://img.shields.io/badge/Email-07080d?style=for-the-badge&logo=gmail&logoColor=ff2bd6" alt="Email"></a>
 </p>
 
-<p align="center">
-  <a href="https://www.linkedin.com/in/sankalp-mathur-985a171b0"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
-  <a href="mailto:sankalpmathur4@gmail.com"><img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"></a>
-</p>
+### About
 
----
+- Currently building at **IntelGrader**
+- Into on-device ML, LLM tooling, and fast, clean interfaces
+- Shipped six production platforms during my internship at RoadVision AI
+- B.Tech in AI & ML (2026), with four published papers
 
-### 🙋 About me
-
-- 🔭 Currently building at **IntelGrader**
-- 🧠 Into on-device ML, LLM tooling, and fast, clean interfaces
-- ⚡ Shipped six production platforms during my internship at RoadVision AI
-- 🎓 B.Tech in AI & ML (2026), with four published papers
-
-### 🛠️ Tech stack
+### Tech stack
 
 | Area | Stack |
 |:--|:--|
@@ -29,7 +22,7 @@
 | **AI / ML** | <img src="https://skillicons.dev/icons?i=pytorch,sklearn,opencv" height="38" alt="PyTorch, scikit-learn, OpenCV"> |
 | **Cloud & tools** | <img src="https://skillicons.dev/icons?i=docker,aws,gcp,nginx,linux,githubactions,vercel,git" height="38" alt="Docker, AWS, Google Cloud, Nginx, Linux, GitHub Actions, Vercel, Git"> |
 
-### 🚀 Things I've built
+### Things I've built
 
 | Project | What it does | Built with |
 |:--|:--|:--|
@@ -39,7 +32,7 @@
 | **[Universal Web Scraper](https://github.com/SankalpMathur05/Universal-Web-Scraper)** | Scrapes any site into tidy, section-by-section JSON | <img src="https://skillicons.dev/icons?i=py,fastapi,react,vite" height="26" alt="Python, FastAPI, React, Vite"> |
 | **[SkillNest](https://github.com/SankalpMathur05/Smarrtif-Assignment-SkillNest)**<br><sub>[live demo](https://smarrtif-assignment-skill-nest.vercel.app)</sub> | A course platform with student and admin roles | <img src="https://skillicons.dev/icons?i=nextjs,ts,express,mongodb" height="26" alt="Next.js, TypeScript, Express, MongoDB"> |
 
-### 💼 Experience
+### Experience
 
 **IntelGrader** · AI & Backend Engineer Intern · *Oct 2026 – now*
 - Trained and shipped on-device vision models for page detection and orientation (PyTorch → ONNX), running inside a custom Kotlin camera module
@@ -65,16 +58,10 @@
 **Research** · *2025 – 2026*
 - Four published papers, including *Benchmarking Large Language Models for Structured Data Processing* (Springer, 2026)
 
-### 📊 GitHub activity
+<br>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/SankalpMathur05/SankalpMathur05/main/assets/languages-dark.svg">
-  <img src="https://raw.githubusercontent.com/SankalpMathur05/SankalpMathur05/main/assets/languages-light.svg" alt="Most used languages across my public repos" width="100%">
-</picture>
+<img src="assets/orbit.svg" alt="My stack in orbit: Python, TypeScript, React, Next.js, PyTorch, FastAPI, Kotlin, PostgreSQL, ONNX, Docker and React Native" width="100%">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/SankalpMathur05/SankalpMathur05/output/snake-dark.svg">
-  <img src="https://raw.githubusercontent.com/SankalpMathur05/SankalpMathur05/output/snake-light.svg" alt="A snake eating my contribution graph" width="100%">
-</picture>
+<img src="assets/languages.svg" alt="Most used languages across my public repos" width="100%">
 
-<p align="center"><img src="https://komarev.com/ghpvc/?username=SankalpMathur05&label=Profile%20views&color=2f81f7&style=flat-square" alt="Profile views"></p>
+<p align="center"><img src="https://komarev.com/ghpvc/?username=SankalpMathur05&label=profile%20views&color=00e5ff&style=flat-square" alt="Profile views"></p>
